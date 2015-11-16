@@ -1,0 +1,31 @@
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+h1, h2, h3, h4, h5 {
+  margin-top: 5px
+}
+
+code {
+  display: block;
+  background-color: white;
+  padding: 5px;
+  border-radius: 3px;
+  border: 1px solid #E2F2F1;
+}
+
+.noselect {
+    -webkit-touch-callout: none !important;
+    -webkit-user-select: none !important;
+    -khtml-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+}
+
+.note-textarea img {
+  max-width: 100%;
+}

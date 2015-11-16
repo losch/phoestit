@@ -1,0 +1,12 @@
+/.idea
+/_build
+/deps
+/priv/frontend/node_modules
+/priv/frontend/*.log
+/priv/frontend/.idea
+/priv/static/js/bundle.js
+erl_crash.dump
+*.ez
+.DS_Store
+phoestit.iml
+config/prod.secret.exs
