@@ -1,0 +1,32 @@
+import _ from 'lodash';
+import React, { Component, PropTypes } from 'react';
+import ReactDom from 'react-dom';
+
+/**
+ * Draggable, resizable, editable and deletable note component
+ */
+export default class AreaIndicator extends Component {
+  render() {
+    const { width, height } = this.props;
+
+    const areaStyle = {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: width,
+      height: height,
+      borderWidth: '1px',
+      borderColor: 'gray',
+      borderBottomStyle: 'dashed',
+      borderRightStyle: 'dashed'
+    };
+
+    return <div style={areaStyle}/>;
+  }
+}
+
+AreaIndicator.propTypes = {
+  // Viewable area's dimensions
+  width: PropTypes.string.isRequired,
+  height: PropTypes.string.isRequired
+};

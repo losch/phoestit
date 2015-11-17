@@ -48,7 +48,7 @@ export default class Note extends Component {
     let { isEditing } = this.state;
 
     let noteStyle = {
-      position: 'fixed',
+      position: 'absolute',
       cursor: 'pointer',
       opacity: '0.8',
       backgroundColor: '#E0F2F1'

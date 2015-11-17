@@ -65,7 +65,8 @@ export default class Draggable extends Component {
       return;
     }
 
-    let elemRect = ReactDom.findDOMNode(this).getBoundingClientRect();
+    let thisNode = ReactDom.findDOMNode(this);
+    let elemRect = thisNode.getBoundingClientRect();
 
     // Resizing
     if (e.target.className === 'resizeHandle') {
@@ -82,11 +83,12 @@ export default class Draggable extends Component {
     }
     // Dragging
     else {
+      let { scrollLeft, scrollTop } = document.documentElement;
       this.setState({
         isDragging: true,
         relative: {
-          x: e.pageX - elemRect.left,
-          y: e.pageY - elemRect.top
+          x: e.pageX - elemRect.left - scrollLeft,
+          y: e.pageY - elemRect.top - scrollTop
         }
       });
     }

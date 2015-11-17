@@ -14,6 +14,9 @@ export const NOTES_RECEIVED = 'NOTES_RECEIVED';
 export const NOTE_CREATED = 'NOTE_CREATED';
 export const NOTE_DELETED = 'NOTE_DELETED';
 
+// View mode actions
+export const VIEW_DIMENSIONS_CHANGED = 'VIEW_DIMENSIONS_CHANGED';
+
 function connectedAction() {
   return { type: CONNECTED };
 }
@@ -46,6 +49,10 @@ function noteDeletedAction(id) {
   return { type: NOTE_DELETED, id };
 }
 
+function viewDimensionsChangedAction(width, height) {
+  return { type: VIEW_DIMENSIONS_CHANGED, width, height };
+}
+
 export function changeContents(id, contents) {
   push('contents_changed', {id: id, contents: contents});
 }
@@ -66,12 +73,19 @@ export function deleteNote(id) {
   push('delete_note', {id: id});
 }
 
-export function channelListener(dispatch) {
+export function announceViewDimensions(width, height) {
+  push('view_dimensions', {width: width, height: height});
+}
+
+export function channelListener(dispatch, callback) {
   withChannel(channel => {
     channel.join()
       .receive('ok', resp => {
         dispatch(connectedAction());
         dispatch(notesReceivedAction(resp.notes));
+        dispatch(viewDimensionsChangedAction(resp.dimensions.width,
+                                             resp.dimensions.height))
+        callback();
       })
       .receive('fail', resp => {
         console.error('Failed to join channel!');
@@ -97,6 +111,10 @@ export function channelListener(dispatch) {
     channel.on('delete_note', resp => {
       dispatch(noteDeletedAction(resp.id));
     });
+
+    channel.on('view_dimensions', resp => {
+      dispatch(viewDimensionsChangedAction(resp.width, resp.height));
+    })
   });
 
   withSocket(socket => {
