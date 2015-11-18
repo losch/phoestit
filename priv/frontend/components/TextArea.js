@@ -38,7 +38,10 @@ export default class TextArea extends Component {
     let { isEditing } = this.props;
 
     let textAreaStyle = {
-      padding: '15px 5px 0px 5px',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: '5px',
       resize: 'none',
       width: '100%',
       height: '100%',
@@ -58,8 +61,9 @@ export default class TextArea extends Component {
                 value={value} />
       :
       <div style={textAreaStyle}
-           className='note-textarea noselect'
-           dangerouslySetInnerHTML={this._rawMarkup()}>
+           className='note-textarea noselect'>
+          <div className='note-markdown'
+               dangerouslySetInnerHTML={this._rawMarkup()}></div>
       </div>;
   }
 

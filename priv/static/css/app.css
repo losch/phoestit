@@ -29,3 +29,13 @@ code {
 .note-textarea img {
   max-width: 100%;
 }
+
+.note-markdown td {
+  padding: 5px;
+  border: 1px solid #B2DFDB;
+  background: white;
+}
+
+.note-markdown li {
+  margin-left: -5px;
+}

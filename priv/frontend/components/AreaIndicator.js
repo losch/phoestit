@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import ReactDom from 'react-dom';
 
 /**
- * Draggable, resizable, editable and deletable note component
+ * Indicator for view-only display's size
  */
 export default class AreaIndicator extends Component {
   render() {
@@ -27,6 +27,6 @@ export default class AreaIndicator extends Component {
 
 AreaIndicator.propTypes = {
   // Viewable area's dimensions
-  width: PropTypes.string.isRequired,
-  height: PropTypes.string.isRequired
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired
 };
