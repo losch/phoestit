@@ -6,7 +6,6 @@ import Draggable from './Draggable';
 import TextArea from './Textarea';
 import Mouse from '../constants/mouse';
 
-const Paper = require('material-ui/lib/paper');
 const FlatButton = require('material-ui/lib/flat-button');
 
 const MOUSE_CLICK_DELAY = 100; // ms
@@ -46,8 +45,8 @@ export default class Note extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     return (this.props.position.x !== nextProps.position.x ||
             this.props.position.y !== nextProps.position.y ||
-            this.props.size.x !== nextProps.size.x ||
-            this.props.size.y !== nextProps.size.y ||
+            this.props.size.width !== nextProps.size.width ||
+            this.props.size.height !== nextProps.size.height ||
             this.props.contents !== nextProps.contents ||
             this.state.isEditing !== nextState.isEditing);
   }
@@ -59,8 +58,8 @@ export default class Note extends Component {
     let noteStyle = {
       position: 'absolute',
       cursor: 'pointer',
-      opacity: '0.8',
-      backgroundColor: '#E0F2F1'
+      backgroundColor: '#E0F2F1',
+      boxShadow: '1px'
     };
 
     let idStyle = {
@@ -80,11 +79,6 @@ export default class Note extends Component {
       minWidth: '15px'
     };
 
-    if (!isEditing) {
-      deleteButtonStyle['display'] = 'none';
-      idStyle['display'] = 'none';
-    }
-
     return (
       <Motion style={{
                       x: spring(position.x, [120, 17]),
@@ -100,19 +94,20 @@ export default class Note extends Component {
                      style={noteStyle}
                      onMove={position => this._onMove(position)}
                      onResize={size => this._onResize(size)}>
-            <Paper style={{width: '100%', height: '100%'}}
-                   onMouseDown={e => this.onMouseDown(e)}
-                   onMouseUp={() => this._startEditing()}>
-              <div style={idStyle}>#{id}</div>
+            <div style={{width: '100%', height: '100%'}}
+                 onMouseDown={e => this.onMouseDown(e)}
+                 onMouseUp={() => this._startEditing()}>
+              { isEditing ? <div style={idStyle}>#{id}</div> : undefined }
               <TextArea
                 isEditing={isEditing}
                 value={contents}
                 onChange={contents => this._onContentsChange(contents)} />
-              <FlatButton style={deleteButtonStyle}
-                          secondary={true}
-                          label="X"
-                          onClick={() => onDelete(id)} />
-            </Paper>
+              { isEditing ? <FlatButton style={deleteButtonStyle}
+                                        secondary={true}
+                                        label="X"
+                                        onClick={() => onDelete(id)} /> :
+                            undefined }
+            </div>
           </Draggable>
         }
       </Motion>
