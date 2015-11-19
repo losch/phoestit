@@ -6,6 +6,13 @@ import ReactDom from 'react-dom';
  * Indicator for view-only display's size
  */
 export default class AreaIndicator extends Component {
+  shouldComponentUpdate(nextProps) {
+    return (
+      this.props.width !== nextProps.width ||
+      this.props.height !== nextProps.height
+    );
+  }
+
   render() {
     const { width, height } = this.props;
 

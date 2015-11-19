@@ -3,13 +3,19 @@ import ReactDom from 'react-dom';
 
 const RaisedButton = require('material-ui/lib/raised-button');
 
-let AddButton = ({onClick, text, style}) => {
-  return (
-    <RaisedButton style={style}
-                  primary={true}
-                  label={text}
-                  onClick={onClick} />
-  );
-};
+export default class AddButton extends Component {
+  shouldComponentUpdate() {
+    return false;
+  }
 
-export default AddButton;
+  render() {
+    let { style, text, onClick } = this.props;
+
+    return (
+      <RaisedButton style={style}
+                    primary={true}
+                    label={text}
+                    onClick={onClick} />
+    );
+  }
+}

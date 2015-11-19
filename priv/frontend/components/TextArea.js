@@ -15,6 +15,14 @@ export default class TextArea extends Component {
     };
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return (
+      this.props.isEditing !== nextProps.isEditing ||
+      this.props.value !== nextProps.value ||
+      this.state.value !== nextState.value
+    );
+  }
+
   componentWillReceiveProps(nextProps) {
     // If received new contents via props, then update the internal state
     if (this.props.value !== nextProps.value) {

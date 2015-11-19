@@ -43,6 +43,15 @@ export default class Note extends Component {
     document.removeEventListener('mousedown', this.onMouseDown);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return (this.props.position.x !== nextProps.position.x ||
+            this.props.position.y !== nextProps.position.y ||
+            this.props.size.x !== nextProps.size.x ||
+            this.props.size.y !== nextProps.size.y ||
+            this.props.contents !== nextProps.contents ||
+            this.state.isEditing !== nextState.isEditing);
+  }
+
   render() {
     let { id, size, position, contents, onDelete } = this.props;
     let { isEditing } = this.state;
