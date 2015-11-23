@@ -58,8 +58,7 @@ export default class Note extends Component {
     let noteStyle = {
       position: 'absolute',
       cursor: 'pointer',
-      backgroundColor: '#E0F2F1',
-      boxShadow: '1px'
+      backgroundColor: '#E0F2F1'
     };
 
     let idStyle = {

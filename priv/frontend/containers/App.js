@@ -27,11 +27,11 @@ class App extends Component {
     super(props);
 
     this.resizeListener =
-      _.debounce(() => this.maybeAnnounceDimensions(), RESIZE_DELAY);
+      _.debounce(() => this.announceDimensions(), RESIZE_DELAY);
 
     channelListener(this.props.dispatch, () => {
-      this.maybeAnnounceDimensions();
       if (this.isViewOnly()) {
+        this.announceDimensions();
         window.addEventListener('resize', this.resizeListener, true);
       }
     });
@@ -53,27 +53,28 @@ class App extends Component {
     return this.props.params.view === 'view';
   }
 
-  maybeAnnounceDimensions() {
-    if (this.isViewOnly()) {
-      // Detect and announce the visible area's dimensions
-      let { documentElement } = document;
-      let { clientWidth, clientHeight } = documentElement;
+  announceDimensions() {
+    // Detect and announce the visible area's dimensions
+    let { documentElement } = document;
+    let { clientWidth, clientHeight } = documentElement;
 
-      var width = Math.max(clientWidth, window.innerWidth || 0);
-      var height = Math.max(clientHeight, window.innerHeight || 0);
+    var width = Math.max(clientWidth, window.innerWidth || 0);
+    var height = Math.max(clientHeight, window.innerHeight || 0);
 
-      announceViewDimensions(width, height)
-    }
+    announceViewDimensions(width, height)
   }
 
   static findMinDimensions_(notes, minX, minY) {
     let maxX = minX;
     let maxY = minY;
 
-    for (let i = 0; i < notes.length; i++) {
-      let note = notes[i];
+    let noteKeys = Object.keys(notes);
+    for (let i = 0; i < noteKeys.length; i++) {
+      let key = noteKeys[i];
+      let note = notes[key];
       let x = note.position.x + note.size.width;
       let y = note.position.y + note.size.height;
+
       if (x > maxX) maxX = x;
       if (y > maxY) maxY = y;
     }
@@ -98,9 +99,14 @@ class App extends Component {
       height: '100%',
       minHeight: minDimensions.height,
       minWidth: minDimensions.width,
-      overflow: 'auto',
       backgroundColor: '#B2DFDB'
     };
+
+    if (this.isViewOnly()) {
+      appStyle['minWidth'] = viewarea.width;
+      appStyle['minHeight'] = viewarea.height;
+      appStyle['overflow'] = 'hidden';
+    }
 
     let addNoteStyle = {
       position: 'fixed',
