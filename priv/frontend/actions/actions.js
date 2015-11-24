@@ -13,6 +13,7 @@ export const CONTENTS_RECEIVED = 'CONTENTS_RECEIVED';
 export const NOTES_RECEIVED = 'NOTES_RECEIVED';
 export const NOTE_CREATED = 'NOTE_CREATED';
 export const NOTE_DELETED = 'NOTE_DELETED';
+export const NOTE_API_ID_CHANGED = 'NOTE_API_ID_CHANGED';
 
 // View mode actions
 export const VIEW_DIMENSIONS_CHANGED = 'VIEW_DIMENSIONS_CHANGED';
@@ -49,6 +50,10 @@ function noteDeletedAction(id) {
   return { type: NOTE_DELETED, id };
 }
 
+function noteApiIdChanged(id, apiId) {
+  return { type: NOTE_API_ID_CHANGED, id, apiId };
+}
+
 function viewDimensionsChangedAction(width, height) {
   return { type: VIEW_DIMENSIONS_CHANGED, width, height };
 }
@@ -63,6 +68,10 @@ export function changePosition(id, position) {
 
 export function changeSize(id, size) {
   push('note_resized', {id: id, size: size});
+}
+
+export function changeApiId(id, apiId) {
+  push('note_api_id_changed', {id: id, api_id: apiId});
 }
 
 export function createNote(contents, position, size) {
@@ -102,6 +111,10 @@ export function channelListener(dispatch, callback) {
 
     channel.on('note_resized', resp => {
       dispatch(noteResizedAction(resp.id, resp.size));
+    });
+
+    channel.on('note_api_id_changed', resp => {
+      dispatch(noteApiIdChanged(resp.id, resp.api_id));
     });
 
     channel.on('new_note', resp => {

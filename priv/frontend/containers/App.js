@@ -7,7 +7,8 @@ import { announceViewDimensions,
          changePosition,
          changeSize,
          createNote,
-         deleteNote } from '../actions/actions';
+         deleteNote,
+         changeApiId } from '../actions/actions';
 import ConnectionLostDialog from './ConnectionLostDialog';
 import AreaIndicator from '../components/AreaIndicator';
 import Note from '../components/Note';
@@ -142,9 +143,11 @@ class App extends Component {
                 contents={note.contents}
                 position={note.position}
                 size={note.size}
+                api_id={note.api_id}
                 onContentsChange={(contents) => changeContents(key, contents)}
                 onPositionChange={(position) => changePosition(key, position)}
                 onSizeChange={(size) => changeSize(key, size)}
+                onApiIdChange={(apiId) => changeApiId(key, apiId)}
                 onDelete={App.onDeleteNote}
             />);
       }

@@ -26,7 +26,8 @@ defmodule Phoestit.Notes do
                       "size" => %{
                           "width" => note.width,
                           "height" => note.height
-                      }
+                      },
+                      "api_id" => note.api_id
                     }
                   ) 
                 end)
@@ -53,6 +54,17 @@ defmodule Phoestit.Notes do
   """
   def get(id) do
     Agent.get(__MODULE__, fn dict -> HashDict.get(dict, id) end)
+  end
+
+  @doc """
+  Returns a note by api id
+  """
+  def getByApiId(api_id) do
+    Agent.get(__MODULE__, fn dict ->
+      Enum.find(HashDict.to_list(dict), fn({key, values}) ->
+        values["api_id"] == api_id
+      end)
+    end)
   end
 
   @doc """
@@ -116,7 +128,7 @@ defmodule Phoestit.Notes do
     Repo.transaction fn ->
       # Remove deleted notes
       ids = HashDict.keys(dict)
-      from(note in Note, where: not note.id in ^ids) 
+      from(note in Note, where: not note.id in ^ids)
         |> Repo.delete_all
 
       # Then update or insert the present notes
@@ -125,13 +137,15 @@ defmodule Phoestit.Notes do
           contents = note["contents"]
           position = note["position"]
           size = note["size"]
+          api_id = note["api_id"]
 
           params = %{
             contents: contents,
             x: position["x"],
             y: position["y"],
             width: size["width"],
-            height: size["height"]
+            height: size["height"],
+            api_id: api_id
           }
 
           idInt = Integer.parse(id) |> elem(0)

@@ -21,7 +21,8 @@ defmodule Phoestit.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", Phoestit do
-  #   pipe_through :api
-  # end
+  scope "/api", Phoestit do
+     pipe_through :api
+     resources "notes", NoteController, only: [:update]
+  end
 end

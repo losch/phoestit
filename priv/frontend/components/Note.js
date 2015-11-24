@@ -48,11 +48,12 @@ export default class Note extends Component {
             this.props.size.width !== nextProps.size.width ||
             this.props.size.height !== nextProps.size.height ||
             this.props.contents !== nextProps.contents ||
-            this.state.isEditing !== nextState.isEditing);
+            this.state.isEditing !== nextState.isEditing ||
+            this.props.api_id !== nextProps.api_id);
   }
 
   render() {
-    let { id, size, position, contents, onDelete } = this.props;
+    let { id, size, position, contents, api_id, onDelete } = this.props;
     let { isEditing } = this.state;
 
     let noteStyle = {
@@ -60,6 +61,10 @@ export default class Note extends Component {
       cursor: 'pointer',
       backgroundColor: '#E0F2F1'
     };
+
+    if (api_id) {
+      noteStyle['backgroundColor'] = '#FFE0B2';
+    }
 
     let idStyle = {
       position: 'absolute',
@@ -96,7 +101,9 @@ export default class Note extends Component {
             <div style={{width: '100%', height: '100%'}}
                  onMouseDown={e => this.onMouseDown(e)}
                  onMouseUp={() => this._startEditing()}>
-              { isEditing ? <div style={idStyle}>#{id}</div> : undefined }
+              { isEditing ? <div onClick={() => this._onEditApiId()}
+                                 style={idStyle}>#{id} / {api_id}</div> :
+                            undefined }
               <TextArea
                 isEditing={isEditing}
                 value={contents}
@@ -111,6 +118,12 @@ export default class Note extends Component {
         }
       </Motion>
     );
+  }
+
+  _onEditApiId() {
+    let {api_id, onApiIdChange} = this.props;
+    let newApiId = prompt("Set API ID for note?", api_id);
+    onApiIdChange(newApiId);
   }
 
   _onResize(size) {
@@ -183,7 +196,11 @@ Note.propTypes = {
   // Note's contents
   contents: PropTypes.string.isRequired,
 
+  // Note's API ID
+  api_id: PropTypes.string.isRequired,
+
   // Callback functions which are called when note's attributes are changed
+  onApiIdChange: PropTypes.func.isRequired,
   onContentsChange: PropTypes.func.isRequired,
   onPositionChange: PropTypes.func.isRequired,
   onSizeChange: PropTypes.func.isRequired,

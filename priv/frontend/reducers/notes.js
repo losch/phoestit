@@ -3,7 +3,8 @@ import { POSITION_RECEIVED,
          CONTENTS_RECEIVED,
          NOTES_RECEIVED,
          NOTE_CREATED,
-         NOTE_DELETED } from '../actions/actions.js';
+         NOTE_DELETED,
+         NOTE_API_ID_CHANGED } from '../actions/actions.js';
 
 var initialState = {};
 
@@ -21,7 +22,8 @@ function createNote(notes, id, contents, position, size) {
   newNotes[id] = {
     contents: contents,
     position: position,
-    size: size
+    size: size,
+    api_id: null
   };
   return newNotes;
 }
@@ -76,6 +78,9 @@ export default function notes(state = initialState, action = null) {
 
     case NOTES_RECEIVED:
       return action.notes;
+
+    case NOTE_API_ID_CHANGED:
+      return editNoteById(state, action.id, {api_id: action.apiId});
 
     case NOTE_CREATED:
       return createNote(state,

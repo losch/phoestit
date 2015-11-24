@@ -45,6 +45,14 @@ defmodule Phoestit.RoomChannel do
     {:noreply, socket}
   end
 
+  def handle_in("note_api_id_changed", 
+                %{"id" => id, "api_id" => api_id}, 
+                socket) do
+    Notes.update(id, %{"api_id" => api_id})
+    broadcast! socket, "note_api_id_changed", %{id: id, api_id: api_id}
+    {:noreply, socket}
+  end
+
   def handle_in("new_note",
                 %{"contents" => contents, 
                   "position" => position, 

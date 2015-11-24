@@ -2,6 +2,7 @@ defmodule Phoestit.Note do
   use Phoestit.Web, :model
 
   schema "notes" do
+    field :api_id, :string
     field :contents, :string
     field :x, :integer
     field :y, :integer
@@ -12,7 +13,7 @@ defmodule Phoestit.Note do
   end
 
   @required_fields ~w(contents x y width height)
-  @optional_fields ~w()
+  @optional_fields ~w(api_id)
 
   @doc """
   Creates a changeset based on the `model` and `params`.
