@@ -23,17 +23,29 @@ To start server:
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-# Changing note contents via HTTP API
+## Changing note contents via HTTP API
+
+Note contents can be changed by performing PUT or PATCH request to
+`/api/notes/:api_id`. This enables Phöst-it to be used in many different use
+cases.
+
+Note needs to have an identifier called *API ID* which is used for selecting
+the correct note via API. This identifier is added via UI. Note's position and
+size is also only controlled via UI.
+
+##### Steps for creating a note that can be updated via API
 
   1. Create a new note in the UI (or use an existing note for this)
   2. Click the note for entering editing mode
   3. Then click the ID field in note's left upper corner
   4. A prompt will ask for a new API ID. The API ID is a string.
-  5. Note will change to orange color for indicating that it can be updated via API
-  6. PUT and PATCH requests to /api/notes/:api_id with JSON payload changes the contents of a note
+  5. Note will change to orange color for indicating that it can be updated
+     via API
+  6. PUT and PATCH requests to `/api/notes/:api_id` with JSON payload changes
+     the contents of a note
 
-Example:
+##### PUT request example:
 
-  curl -H "Content-Type: application/json" -X PUT -d '{"contents": "eggs"}' "http://localhost:4000/api/notes/ham"
+    curl -H "Content-Type: application/json" -X PUT -d '{"contents": "eggs"}' "http://localhost:4000/api/notes/ham"
 
 This request updates note's which API ID is "ham" contents to "eggs".
