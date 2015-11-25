@@ -123,7 +123,9 @@ export default class Note extends Component {
   _onEditApiId() {
     let {api_id, onApiIdChange} = this.props;
     let newApiId = prompt("Set API ID for note?", api_id);
-    onApiIdChange(newApiId);
+    if (newApiId !== null) {
+      onApiIdChange(newApiId);
+    }
   }
 
   _onResize(size) {
