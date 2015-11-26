@@ -82,7 +82,7 @@ export default class Draggable extends Component {
       e.preventDefault();
     }
     // Dragging
-    else {
+    else if (!this.props.disableDragging) {
       let { scrollLeft, scrollTop } = document.documentElement;
       this.setState({
         isDragging: true,
@@ -183,6 +183,9 @@ Draggable.propTypes = {
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired
   }).isRequired,
+
+  // Dragging disabled?
+  disableDragging: PropTypes.bool.isRequired,
 
   // Callback function for listening to move events
   onMove: PropTypes.func,

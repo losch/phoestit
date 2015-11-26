@@ -8,7 +8,7 @@ import Mouse from '../constants/mouse';
 
 const FlatButton = require('material-ui/lib/flat-button');
 
-const MOUSE_CLICK_DELAY = 100; // ms
+const MOUSE_CLICK_DELAY = 200; // ms
 const CONTENTS_CHANGE_DELAY = 200; // ms
 const DIMENSION_CHANGE_DELAY = 200; // ms
 
@@ -96,6 +96,7 @@ export default class Note extends Component {
                      initialSize={{width: interpolation.width,
                                    height: interpolation.height}}
                      style={noteStyle}
+                     disableDragging={isEditing}
                      onMove={position => this._onMove(position)}
                      onResize={size => this._onResize(size)}>
             <div style={{width: '100%', height: '100%'}}
