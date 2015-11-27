@@ -102,9 +102,13 @@ export default class Note extends Component {
             <div style={{width: '100%', height: '100%'}}
                  onMouseDown={e => this.onMouseDown(e)}
                  onMouseUp={() => this._startEditing()}>
-              { isEditing ? <div onClick={() => this._onEditApiId()}
-                                 style={idStyle}>#{id} / {api_id}</div> :
-                            undefined }
+              {
+                isEditing ? <div onClick={() => this._onEditApiId()}
+                                 style={idStyle}>{
+                              "#" + id + (api_id ? " / " + api_id : "")
+                            }</div> :
+                            undefined
+              }
               <TextArea
                 isEditing={isEditing}
                 value={contents}
