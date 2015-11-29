@@ -9,7 +9,10 @@ defmodule Phoestit.RoomChannel do
   def join("rooms:lobby", _message, socket) do
     notes = Notes.get()
     dimensions = ViewDimensions.get()
-    state = %{notes: notes, dimensions: dimensions}
+    clientVersion = Phoestit.ClientVersion.get
+    state = %{notes: notes,
+              dimensions: dimensions,
+              clientVersion: clientVersion}
     {:ok, state, socket}
   end
 

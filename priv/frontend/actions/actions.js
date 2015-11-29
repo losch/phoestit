@@ -6,6 +6,9 @@ import { withSocket, withChannel, push } from '../api/sockets';
 export const CONNECTED = 'CONNECTED';
 export const DISCONNECTED = 'DISCONNECTED';
 
+// Client version
+export const CLIENT_VERSION_RECEIVED = 'CLIENT_VERSION_RECEIVED';
+
 // Note action types
 export const POSITION_RECEIVED = 'POSITION_RECEIVED';
 export const SIZE_RECEIVED = 'SIZE_RECEIVED';
@@ -58,6 +61,14 @@ function viewDimensionsChangedAction(width, height) {
   return { type: VIEW_DIMENSIONS_CHANGED, width, height };
 }
 
+function clientVersionReceived(clientVersion) {
+  return { type: CLIENT_VERSION_RECEIVED, clientVersion };
+}
+
+/*
+ * Client -> server
+ */
+
 export function changeContents(id, contents) {
   push('contents_changed', {id: id, contents: contents});
 }
@@ -86,6 +97,11 @@ export function announceViewDimensions(width, height) {
   push('view_dimensions', {width: width, height: height});
 }
 
+
+/*
+ * Server -> client
+ */
+
 export function channelListener(dispatch, callback) {
   withChannel(channel => {
     channel.join()
@@ -93,7 +109,8 @@ export function channelListener(dispatch, callback) {
         dispatch(connectedAction());
         dispatch(notesReceivedAction(resp.notes));
         dispatch(viewDimensionsChangedAction(resp.dimensions.width,
-                                             resp.dimensions.height))
+                                             resp.dimensions.height));
+        dispatch(clientVersionReceived(resp.clientVersion));
         callback();
       })
       .receive('fail', resp => {

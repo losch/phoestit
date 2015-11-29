@@ -50,6 +50,13 @@ class App extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    // Client version is not up-to-date so reload the page
+    if (nextProps.client.isOutdated) {
+      location.reload();
+    }
+  }
+
   isViewOnly() {
     return this.props.params.view === 'view';
   }
@@ -179,6 +186,7 @@ App.childContextTypes = {
 function select(state) {
   return {
     connection: state.connection,
+    client: state.client,
     notes: state.notes,
     viewarea: state.viewarea
   };
