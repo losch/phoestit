@@ -3,17 +3,21 @@ defmodule Phoestit.NoteController do
   alias Phoestit.Notes
 
   def update(conn, %{"id" => api_id, "contents" => contents}) do
-    # TODO: refactor this and updates from channel to some common place
-    case Notes.getByApiId(api_id) do
-      {id, _} ->
-        Notes.update(id, %{"contents" => contents})
-        Phoestit.Endpoint.broadcast("rooms:lobby",
-                                    "contents_changed",
-                                    %{id: id, contents: contents})
-        json conn, %{"ok" => "Note updated"}
+    if is_bitstring(contents) do
+      # TODO: refactor this and updates from channel to some common place
+      case Notes.getByApiId(api_id) do
+        {id, _} ->
+          Notes.update(id, %{"contents" => contents})
+          Phoestit.Endpoint.broadcast("rooms:lobby",
+                                      "contents_changed",
+                                      %{id: id, contents: contents})
+          json conn, %{"ok" => "Note updated"}
 
-      _ ->
-        json conn, %{"error" => "No such note found"}
+        _ ->
+          json conn, %{"error" => "No such note found"}
+      end
+    else
+      json conn, %{"error" => "Contents must be a string"}
     end
   end
 end

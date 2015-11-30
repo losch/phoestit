@@ -24,5 +24,6 @@ defmodule Phoestit.Note do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
+    |> validate_length(:contents, min: 0, max: 2000)
   end
 end
